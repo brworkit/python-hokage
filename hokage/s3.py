@@ -1,14 +1,14 @@
 import boto3
 
-def create_bucket_with_options(bucket_name, tag_set, server_side_encryption_rules, acl='private'):
-    s3_resource = boto3.resource('s3')
+def create_bucket_with_options(bucket_name, tag_set, server_side_encryption_rules, acl='private', region='us-east-1'):
+    s3_resource = boto3.resource('s3', region_name=region)
 
     response_bucket_create = s3_resource.create_bucket(
         ACL=acl,
         Bucket=bucket_name
     )
 
-    s3_client = boto3.client('s3')
+    s3_client = boto3.client('s3', region_name=region)
 
     response_bucket_tagging = s3_client.put_bucket_tagging(
         Bucket=bucket_name,
