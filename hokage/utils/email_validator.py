@@ -1,5 +1,7 @@
 import re
 
+CASES = [' ', ";", ","]
+
 def is_valid_email(email, regex):
     if email is None:
         return False
@@ -7,10 +9,7 @@ def is_valid_email(email, regex):
         return False
     if email.strip() == "":
         return False
-    if email.find(","):
-        return False
-    if email.find(";"):
-        return False
-    if email.find(" "):
-        return False
+    for case in CASES:
+        if case in email:
+            return False
     return re.search(regex, email.lower())
