@@ -7,4 +7,10 @@ def is_valid_email(email, regex):
         return False
     if email.strip() == "":
         return False
+    if email.find(","):
+        return False
+    if email.find(";"):
+        return False
+    if email.find(" "):
+        return False
     return re.search(regex, email.lower())
