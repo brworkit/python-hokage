@@ -1,5 +1,6 @@
 import boto3
 
+
 def create_bucket_with_options(bucket_name,
                                tag_set,
                                server_side_encryption_rules,
@@ -16,7 +17,9 @@ def create_bucket_with_options(bucket_name,
 
     response_bucket_create = s3_resource.create_bucket(
         ACL=acl,
-        Bucket=bucket_name
+        Bucket=bucket_name,
+        CreateBucketConfiguration={
+            'LocationConstraint': region}
     )
 
     if enable_versioning:
