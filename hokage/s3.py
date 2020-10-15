@@ -30,7 +30,7 @@ def create_bucket_with_options(bucket_name,
             ACL=acl,
             Bucket=bucket_name,
             CreateBucketConfiguration={
-                'LocationConstraint': region}
+                'LocationConstraint': location_constraint}
         )
 
 
