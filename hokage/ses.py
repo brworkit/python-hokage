@@ -20,7 +20,7 @@ def send_email(sender_name, sender_email, recipient_email, subject, body_text, b
 
         msg['Subject'] = subject
         msg['From'] = f'{sender_name} <{sender_email}>'
-        msg['To'] = to
+        msg['To'] = ",".join(to)
 
         msg_body = MIMEMultipart('alternative')
 
@@ -42,7 +42,7 @@ def send_email(sender_name, sender_email, recipient_email, subject, body_text, b
 
         response = client.send_raw_email(
             Source=msg['From'],
-            Destinations=to,
+            Destinations=",".join(to),
             RawMessage={'Data': msg.as_string()}
         )
 
