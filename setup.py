@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hokage",
-    version="0.0.9",
+    version="0.0.11",
     author="brworkit",
     author_email="brworkit@gmail.com",
     description="A python package for avoid repetitions.",

@@ -6,6 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 
+
 def send_email(sender_name, sender_email, recipient_email, subject, body_text, body_html=None, attachment=None, region_name='us-east-1'):
     try:
         client = boto3.client('ses', region_name=region_name)
@@ -13,9 +14,13 @@ def send_email(sender_name, sender_email, recipient_email, subject, body_text, b
 
         msg = MIMEMultipart('mixed')
 
+        to = recipient_email
+        if isinstance(recipient_email, str):
+            to = recipient_email.split(",")
+
         msg['Subject'] = subject
         msg['From'] = f'{sender_name} <{sender_email}>'
-        msg['To'] = recipient_email
+        msg['To'] = to
 
         msg_body = MIMEMultipart('alternative')
 
@@ -29,18 +34,18 @@ def send_email(sender_name, sender_email, recipient_email, subject, body_text, b
 
         if attachment:
             att = MIMEApplication(open(attachment, 'rb').read())
-            att.add_header('Content-Disposition', 'attachment', filename=os.path.basename(attachment))
+            att.add_header('Content-Disposition', 'attachment',
+                           filename=os.path.basename(attachment))
             msg.attach(att)
 
         msg.attach(msg_body)
 
         response = client.send_raw_email(
             Source=msg['From'],
-            Destinations=[msg['To']],
+            Destinations=to,
             RawMessage={'Data': msg.as_string()}
         )
 
         return response
     except Exception as e:
-        print(e)
         raise e
