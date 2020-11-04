@@ -14,13 +14,9 @@ def send_email(sender_name, sender_email, recipient_email, subject, body_text, b
 
         msg = MIMEMultipart('mixed')
 
-        to = recipient_email
-        if isinstance(recipient_email, str):
-            to = recipient_email.split(",")
-
         msg['Subject'] = subject
         msg['From'] = f'{sender_name} <{sender_email}>'
-        msg['To'] = ",".join(to)
+        msg['To'] = recipient_email
 
         msg_body = MIMEMultipart('alternative')
 
@@ -42,7 +38,8 @@ def send_email(sender_name, sender_email, recipient_email, subject, body_text, b
 
         response = client.send_raw_email(
             Source=msg['From'],
-            Destinations=",".join(to),
+            # Destinations=",".join(to),
+            Destinations=recipient_email,
             RawMessage={'Data': msg.as_string()}
         )
 
