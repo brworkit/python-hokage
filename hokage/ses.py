@@ -1,4 +1,3 @@
-
 import os
 import boto3
 
@@ -16,7 +15,7 @@ def send_email(sender_name, sender_email, recipient_email, subject, body_text, b
 
         msg['Subject'] = subject
         msg['From'] = f'{sender_name} <{sender_email}>'
-        msg['To'] = recipient_email
+        msg['To'] = ', '.join(map(str, recipient_email))
 
         msg_body = MIMEMultipart('alternative')
 
@@ -38,7 +37,6 @@ def send_email(sender_name, sender_email, recipient_email, subject, body_text, b
 
         response = client.send_raw_email(
             Source=msg['From'],
-            # Destinations=",".join(to),
             Destinations=recipient_email,
             RawMessage={'Data': msg.as_string()}
         )
